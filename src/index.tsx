@@ -1,7 +1,6 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 
-function Root() {
+function Root(): React.ReactElement {
   return <h1>Hello, world.</h1>;
 }
 

@@ -23,7 +23,7 @@ module.exports = env => {
     },
     
     entry: [
-      path.join(PATH_SOURCE, './index.js'),
+      path.join(PATH_SOURCE, './index.tsx'),
     ],
 
     output: {
@@ -31,10 +31,14 @@ module.exports = env => {
       filename: 'js/[name].[contenthash].js',
     },
 
+    resolve: {
+      extensions: [".tsx", ".ts", ".js", ".json"],
+    },
+
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
@@ -45,10 +49,27 @@ module.exports = env => {
                   corejs: 3,
                 }],
                 '@babel/preset-react',
+                '@babel/preset-typescript',
               ],
+              plugins: [
+                "@babel/plugin-proposal-class-properties",
+              ]
             },
           }
-        }
+        },
+        {
+          test: /\.(ts|tsx)$/,
+          exclude: /node_modules/,
+          use: ["ts-loader"],
+        },
+        {
+          test: /\.(css|scss)$/,
+          use: ["style-loader", "css-loader"],
+        },
+        {
+          test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+          use: ["file-loader"],
+        },
       ],
     },
 
