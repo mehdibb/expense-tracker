@@ -2,7 +2,8 @@
   "scripts": {
     "build": "webpack --env.environment=production --config config/webpack.config.js",
     "dev": "webpack --env.environment=development --config config/webpack.config.js",
-    "devserver": "webpack-dev-server --env.environment=development --config config/webpack.config.js"
+    "devserver": "webpack-dev-server --env.environment=development --config config/webpack.config.js",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
@@ -16,6 +17,7 @@
     "@typescript-eslint/parser": "^4.26.0",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "css-loader": "^5.2.6",
     "eslint": "^7.28.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -24,12 +26,15 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "html-webpack-plugin": "^5.3.1",
+    "style-loader": "^2.0.0",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.2",
     "webpack": "^5.38.1",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
     "core-js": "^3.14.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

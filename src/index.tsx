@@ -1,11 +1,9 @@
 import ReactDOM from 'react-dom';
+import './index.css';
+import { Application } from './pages';
 
-
-function Root(): React.ReactElement {
-  return <h1>Hello, world.</h1>;
-}
 
 ReactDOM.render(
-  <Root />,
-  document.getElementById("root"),
+  <Application />,
+  document.getElementById('root'),
 );

@@ -6,13 +6,14 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "react-hooks"
+    "react-hooks",
+    "react"
   ],
   "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "airbnb",
-    "prettier"
+    "airbnb"
   ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
@@ -21,8 +22,7 @@
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-function-return-type": "error",
     "no-unused-vars": "error",
-    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
-    "no-undef": "off"
+    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
   },
   "settings": {
     "react": {
