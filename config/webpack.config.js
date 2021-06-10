@@ -68,7 +68,8 @@ module.exports = env => {
                           }
                         },
                       }
-                    ]
+                    ],
+                    ["@emotion", {sourceMap: true}]
                   ]
                 },
               }
@@ -99,9 +100,9 @@ module.exports = env => {
         template: path.join(PATH_SOURCE, './index.html'),
       }),
       new CleanWebpackPlugin(),
-        new ProvidePlugin({
-           "React": "react",
-        }),
+      new ProvidePlugin({
+          "React": "react",
+      }),
     ],
   };
 };

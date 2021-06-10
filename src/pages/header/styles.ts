@@ -27,13 +27,14 @@ export const Currency = styled.span`
 
 export const BottomSection = styled.section`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const StyledHeader = styled.header`
-  background-color: var(--black);
-  border-radius: 8px;
+  margin-bottom: 56px;
   padding: 24px;
+  border-radius: 8px;
   color: var(--white);
+  background-color: var(--black);
 `;

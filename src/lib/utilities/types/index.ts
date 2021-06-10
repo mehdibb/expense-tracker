@@ -1,5 +1,11 @@
+export enum TransactionDirection {
+  Income,
+  Expense
+}
+
 export interface Transaction {
   date: Date;
   amount: number;
-  type: string;
+  description: string;
+  id: string;
 }

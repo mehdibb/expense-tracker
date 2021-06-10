@@ -7,12 +7,14 @@ export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 function ButtonComponent({
   Icon,
+  children,
   ...props
 }: Props): React.ReactElement {
 
   return (
     <button {...props}>
       {Icon ? <Icon /> : null}
+      {children}
     </button>
   )
 }

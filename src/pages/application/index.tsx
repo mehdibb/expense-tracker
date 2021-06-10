@@ -1,7 +1,11 @@
 import {
   StyledApplication,
 } from './styles';
-import {Header} from '../../pages';
+import {Header, TransactionsList} from '../../pages';
+import {Store, StoreContext} from '../../lib/store';
+import {useMemo} from 'react';
+import {Button} from '../../lib/components';
+import {Add} from '../../lib/assets/images';
 
 
 interface Props {
@@ -9,10 +13,17 @@ interface Props {
 }
 
 function ApplicationComponent({ className }: Props): React.ReactElement {
+  const store = useMemo(() => new Store(), []);
+  
   return (
     <main className={className}>
-      <Header />
-      Application
+      <StoreContext.Provider value={store}>
+        <Header />
+        <Button Icon={Add}>
+          Add Transaction
+        </Button>
+        <TransactionsList />
+      </StoreContext.Provider>
     </main>
   );
 }

@@ -4,6 +4,7 @@ html, body, #root {
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -12,4 +13,9 @@ html, body, #root {
   --black: #0B0F1B;
   --white: #FFF;
   --yellow: #F6CF4F;
+  --dark-yellow: #E4BF48;
+  --light-grey: #EEE;
+  --grey: #AAA;
+  --red: #C73C3E;
+  --green: #3D9465;
 }
