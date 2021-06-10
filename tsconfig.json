@@ -19,9 +19,10 @@
       "noEmit": false,
       "jsx": "react-jsx",
       "useDefineForClassFields": true,
-      "experimentalDecorators": true
+      "experimentalDecorators": true,
   },
   "include": [
-      "src"
+      "src",
+      "src/lib/assets/images/custom.d.ts"
   ]
 }

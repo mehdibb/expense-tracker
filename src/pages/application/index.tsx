@@ -1,6 +1,8 @@
 import {
   StyledApplication,
 } from './styles';
+import {Header} from '../../pages';
+
 
 interface Props {
   className?: string;
@@ -8,9 +10,10 @@ interface Props {
 
 function ApplicationComponent({ className }: Props): React.ReactElement {
   return (
-    <div className={className}>
+    <main className={className}>
+      <Header />
       Application
-    </div>
+    </main>
   );
 }
 
