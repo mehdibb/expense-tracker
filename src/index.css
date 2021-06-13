@@ -12,10 +12,14 @@ html, body, #root {
 :root {
   --black: #0B0F1B;
   --white: #FFF;
+  --light-yellow: #F8DD83;
   --yellow: #F6CF4F;
-  --dark-yellow: #E4BF48;
+  --dark-yellow: #D8A80B;
   --light-grey: #EEE;
   --grey: #AAA;
+  --dark-grey: #555;
   --red: #C73C3E;
   --green: #3D9465;
+  --purple: #6D55A6;
+  --divider-color: #EEEDEF;
 }

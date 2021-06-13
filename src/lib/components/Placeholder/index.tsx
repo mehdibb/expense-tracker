@@ -1,4 +1,5 @@
 import {StyledPlaceholder} from './styles';
+import {memo} from '../../utilities';
 
 
 interface Props {
@@ -15,4 +16,4 @@ function PlaceholderComponent({className, description}: Props): React.ReactEleme
   )
 }
 
-export default StyledPlaceholder.withComponent(PlaceholderComponent);
+export default memo(PlaceholderComponent, StyledPlaceholder);

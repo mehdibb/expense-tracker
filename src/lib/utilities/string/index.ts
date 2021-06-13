@@ -6,6 +6,8 @@ export function dateFormat(
     month?: boolean;
     year?: boolean;
   }): string {
+    console.log(value)
+    
   const abbreviatedMonth = value.toString().split(" ")[1];
   const day = value.getDate();
   const twoDigitDay = day < 10 ? `0${day}` : day;

@@ -1,3 +1,4 @@
 export {default as Application} from './application';
 export {default as Header} from './header';
 export {default as TransactionsList} from './transactions-list';
+export {default as CreateTransaction} from './create-transaction';

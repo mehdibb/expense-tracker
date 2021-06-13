@@ -7,6 +7,7 @@ import {
   Description,
   Type,
 } from './styles';
+import {memo} from '../../../lib/utilities';
 
 
 interface Props {
@@ -16,6 +17,8 @@ interface Props {
 
 function TransactionsListItemComponent({className, item}: Props): React.ReactElement {
 
+  console.log(item.date);
+  
   return (
     <li className={className}>
       <Day>{dateFormat(item.date, {day: true, twoDigitDay: true})}</Day>
@@ -28,4 +31,4 @@ function TransactionsListItemComponent({className, item}: Props): React.ReactEle
   )
 }
 
-export default StyledTransactionsListItem.withComponent(TransactionsListItemComponent)
+export default memo(TransactionsListItemComponent, StyledTransactionsListItem);

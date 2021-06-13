@@ -3,6 +3,7 @@ import {StoreContext} from '../../lib/store';
 import {StyledTransactionsList} from './styles';
 import Item from './item';
 import {Placeholder} from '../../lib/components';
+import {memo} from '../../lib/utilities';
 
 
 interface Props {
@@ -23,4 +24,4 @@ function TransactionsListComponent({className}: Props): React.ReactElement {
   )
 }
 
-export default StyledTransactionsList.withComponent(TransactionsListComponent);
+export default memo(TransactionsListComponent, StyledTransactionsList);

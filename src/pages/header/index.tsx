@@ -1,7 +1,18 @@
-import {BalanceWrapper, BottomSection, Currency, HeaderText, StyledDate, StyledHeader, TopSection} from './styles';
-import {dateFormat} from '../../lib/utilities';
-import { Button, Input } from '../../lib/components';
-import { Edit } from '../../lib/assets/images';
+import {
+  BackButton,
+  BalanceWrapper,
+  BottomSection,
+  Currency,
+  HeaderText,
+  StyledDate,
+  StyledHeader,
+  TopSection,
+} from './styles';
+import {dateFormat, memo} from '../../lib/utilities';
+import {Button, TextInput} from '../../lib/components';
+import {ArrowLeft, Edit} from '../../lib/assets/images';
+import {useHistory, useLocation} from 'react-router';
+import {useCallback} from 'react';
 
 
 interface Props {
@@ -9,9 +20,20 @@ interface Props {
 }
 
 function HeaderComponent({className}: Props): React.ReactElement {
+  const history = useHistory();
+  const location = useLocation();
 
+  const handleBackButtonClick = useCallback(() => {
+    history.goBack();
+  }, []);
+  
   return (
     <header className={className}>
+      {location.pathname === "/create-transaction"
+        ? <BackButton Icon={ArrowLeft} flat purple onClick={handleBackButtonClick}>
+          Back
+        </BackButton>
+        : null}
       <TopSection>
         <HeaderText>Wallet Balance</HeaderText>
         <StyledDate>
@@ -20,7 +42,7 @@ function HeaderComponent({className}: Props): React.ReactElement {
       </TopSection>
       <BottomSection>
         <BalanceWrapper>
-          <Input />
+          <TextInput />
           <Button Icon={Edit}/>
         </BalanceWrapper>
         <Currency>USD</Currency>
@@ -29,4 +51,4 @@ function HeaderComponent({className}: Props): React.ReactElement {
   )
 }
 
-export default StyledHeader.withComponent(HeaderComponent);
+export default memo(HeaderComponent, StyledHeader);
