@@ -56,7 +56,7 @@ export default class Store {
   
   get storingParams(): Transaction {
     return {
-      amount: parseInt(this.amount),
+      amount: (this.categoryActiveItem.id === 'expense' ? -1 : 1) * parseInt(this.amount),
       date: parseDateFromString(this.date),
       description: this.note,
       id: uuid(),

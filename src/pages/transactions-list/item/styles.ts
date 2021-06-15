@@ -37,9 +37,10 @@ export const StyledTransactionsListItem = styled.li`
   width: 100%;
   height: 120px;
   padding: 32px;
-  border-bottom: 2px solid var(--light-grey);
+  border-radius: 4px;
   cursor: pointer;
   user-select: none;
+  box-shadow: 0 4px 4px -3px var(--grey);
   grid-template-areas: 'day type amount'
     'day description amount';
   grid-template-columns: 72px auto 192px;

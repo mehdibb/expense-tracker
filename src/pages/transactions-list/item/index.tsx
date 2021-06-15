@@ -16,8 +16,6 @@ interface Props {
 }
 
 function TransactionsListItemComponent({className, item}: Props): React.ReactElement {
-
-  console.log(item.date);
   
   return (
     <li className={className}>
@@ -25,7 +23,7 @@ function TransactionsListItemComponent({className, item}: Props): React.ReactEle
       <Type>{item.amount > 0 ? 'Income' : 'Expense'}</Type>
       <Description>{item.description}</Description>
       <Amount direction={item.amount > 0 ? TransactionDirection.Income : TransactionDirection.Expense}>
-        {currencyFormat(item.amount)}
+        {currencyFormat(item.amount, true)}
       </Amount>
     </li>
   )

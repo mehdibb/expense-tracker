@@ -6,4 +6,5 @@ export const StyledTransactionsList = styled.ul`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 32px;
 `;

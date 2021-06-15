@@ -7,12 +7,15 @@ import {
   StyledDate,
   StyledHeader,
   TopSection,
+  Balance,
+  Form,
 } from './styles';
-import {dateFormat, memo} from '../../lib/utilities';
+import {currencyFormat, dateFormat, memo} from '../../lib/utilities';
 import {Button, TextInput} from '../../lib/components';
-import {ArrowLeft, Edit} from '../../lib/assets/images';
+import {ArrowLeft, Close, Done, Edit} from '../../lib/assets/images';
 import {useHistory, useLocation} from 'react-router';
-import {useCallback} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {StoreContext} from '../../lib/store';
 
 
 interface Props {
@@ -20,11 +23,41 @@ interface Props {
 }
 
 function HeaderComponent({className}: Props): React.ReactElement {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  
+  const store = useContext(StoreContext);
+  
   const history = useHistory();
   const location = useLocation();
 
   const handleBackButtonClick = useCallback(() => {
     history.goBack();
+  }, []);
+
+  const handleEditBalance = useCallback(() => setIsEditing(true), []);
+
+  const handleDiscardBalance = useCallback(() => {
+    store.rollback();
+    setIsEditing(false);
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Escape' && isEditing) {
+        handleDiscardBalance();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return (): void => window.removeEventListener('keydown', handleKeyDown);
+  }, [isEditing]);
+
+  
+  const handleSubmitBalance = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    store.updateInitialBalance();
+    setIsEditing(false);
   }, []);
   
   return (
@@ -41,10 +74,23 @@ function HeaderComponent({className}: Props): React.ReactElement {
         </StyledDate>
       </TopSection>
       <BottomSection>
-        <BalanceWrapper>
-          <TextInput />
-          <Button Icon={Edit}/>
-        </BalanceWrapper>
+      {isEditing
+        ? <Form onSubmit={handleSubmitBalance}>
+          <TextInput
+            type="number"
+            onChange={store.setEditingInitialBalance}
+            value={store.editingInitialBalance}
+            label="Initial balance:"
+          />
+          <Button Icon={Close} onClick={handleDiscardBalance} type="button" />
+          <Button Icon={Done} type="submit" />
+        </Form>
+        : <BalanceWrapper>
+          <Balance>
+            {currencyFormat(store.balance)}
+          </Balance>
+          <Button Icon={Edit} onClick={handleEditBalance}/>
+        </BalanceWrapper>}
         <Currency>USD</Currency>
       </BottomSection>
     </header>

@@ -6,8 +6,6 @@ export function dateFormat(
     month?: boolean;
     year?: boolean;
   }): string {
-    console.log(value)
-    
   const abbreviatedMonth = value.toString().split(" ")[1];
   const day = value.getDate();
   const twoDigitDay = day < 10 ? `0${day}` : day;
@@ -27,7 +25,12 @@ export function dateFormat(
     ${options.year ? year + ' ' : ''}`.trim();
 }
 
-export function currencyFormat(value: number): string {
+export function currencyFormat(value_: number | string, alwaysShowSign = false): string {
+  const value = typeof value_ === 'number' ? value_ : parseInt(value_);
+
   // TODO: find a native solution for +/- marker
-  return `${value > 0 ? '+' : ''}${(new Intl.NumberFormat([], {style: 'currency', currency: 'USD'})).format(value)}`;
+  return `
+    ${value > 0 && alwaysShowSign ? '+' : ''}\
+${(new Intl.NumberFormat([], {style: 'currency', currency: 'USD'})).format(value)}
+  `;
 }
