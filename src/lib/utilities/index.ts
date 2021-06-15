@@ -8,4 +8,5 @@ export function parseDateFromString(value: string): Date {
 
 export * from './types';
 export * from './string';
+export * from './date';
 export {default as memo} from './memo';

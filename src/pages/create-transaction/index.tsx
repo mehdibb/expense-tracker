@@ -32,9 +32,9 @@ function CreateTransactionComponent({className}: Props): React.ReactElement {
       <TextArea label="Note" value={localStore.note} onChange={localStore.setNote}/>
       <TextInput type="date" label="Date" value={localStore.date} onChange={localStore.setDate}/>
       <SelectBox
-        items={localStore.categoryItems}
-        activeItem={localStore.categoryActiveItem}
-        onActiveItemChange={localStore.setCategoryActiveItem}
+        items={localStore.typeItems}
+        activeItem={localStore.typeActiveItem}
+        onActiveItemChange={localStore.setTypeActiveItem}
         label='Category'
       />
       <Divider />

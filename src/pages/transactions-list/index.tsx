@@ -1,9 +1,10 @@
 import {useContext, useMemo} from 'react';
 import {StoreContext} from '../../lib/store';
-import {StyledTransactionsList} from './styles';
+import {MonthSection, StyledTransactionsList, TransactionsWrapper, YearSection} from './styles';
 import Item from './item';
 import {Placeholder} from '../../lib/components';
-import {memo} from '../../lib/utilities';
+import {memo, monthMap} from '../../lib/utilities';
+import React from 'react';
 
 
 interface Props {
@@ -13,19 +14,36 @@ interface Props {
 function TransactionsListComponent({className}: Props): React.ReactElement {
   const store = useContext(StoreContext);
   
-  const transactionItems = useMemo(() => store.transactions.length === 0
-    ? <Placeholder description="No transactions."/>
-    : [...store.transactions]
-      .sort(({date: firstDate}, {date: secondDate}) => secondDate.getTime() - firstDate.getTime())
-      .map((transaction) => (
-        <Item key={transaction.id} item={transaction} />
-      ))
-  , [store.transactions.length, store.transactions]);
-
+  const transactionItems = useMemo(() => {
+    return Object.entries(store.transactionsDateMap).length === 0
+      ? <Placeholder description="No transactions."/>
+      : Object.keys(store.transactionsDateMap)
+        .sort((firstYear, secondYear) => parseInt(secondYear) - parseInt(firstYear))
+        .map((year) => (
+          <React.Fragment key={year}>
+            <YearSection>{year}</YearSection>
+            {Object.keys(store.transactionsDateMap[year])
+              .sort((firstMonth, secondMonth) => parseInt(secondMonth) - parseInt(firstMonth))
+              .map((month) => (
+                <React.Fragment key={month}>
+                  <MonthSection>{monthMap[month]}</MonthSection>
+                  {store.transactionsDateMap[year][month]
+                    .sort(({date: firstDate}, {date: secondDate}) => secondDate.getDay() - firstDate.getDay())
+                    .map((transaction) => (
+                      <Item key={transaction.id} item={transaction}/>
+                    ))}
+                </React.Fragment>
+            ))}
+          </React.Fragment>
+        ))
+  }, [store.transactions.length, store.transactionsDateMap]);
+  
   return (
-    <ul className={className}>
-      {transactionItems}
-    </ul>
+    <div className={className}>
+      <TransactionsWrapper>
+        {transactionItems}
+      </TransactionsWrapper>
+    </div>
   )
 }
 

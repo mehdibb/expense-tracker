@@ -1,17 +1,50 @@
 import styled from '@emotion/styled';
-import {Button} from '../../lib/components';
+import {Button, SelectBox} from '../../lib/components';
+import {SelectWrapper} from '../../lib/components/form/SelectBox/styles';
 
+
+export const FiltersWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+
+  ${SelectBox} {
+    width: 120px;
+    margin-bottom: unset;
+
+    :not(:last-of-type) {
+      margin-right: 8px;
+    }
+
+    select {
+      padding: 8px;
+    }
+    
+    ${SelectWrapper} {
+      justify-content: space-between;
+    }
+  }
+`;
+
+export const ActionsWrapper = styled.section`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  border-bottom: 1px solid var(--light-grey);
+  padding-bottom: 32px;
+
+  >${Button} {
+    flex-shrink: 0;
+  }
+`;
 
 export const StyledApplication = styled.main`
   display: flex;
-  position: relative;
-  top: 72px;
   flex-direction: column;
   align-items: center;
   width: 720px;
+  min-height: 0;
   margin: auto;
-
-  >${Button} {
-    margin-left: auto;
-  }
+  padding-bottom: 16px;
 `;

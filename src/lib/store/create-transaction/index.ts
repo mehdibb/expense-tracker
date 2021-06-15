@@ -12,7 +12,7 @@ export default class Store {
   
   public date = '';
   
-  public readonly categoryItems: SelectBoxItemType[] = [
+  public readonly typeItems: SelectBoxItemType[] = [
     {
       id: 'income',
       text: 'Income'
@@ -24,7 +24,7 @@ export default class Store {
   ];
   
   // find method is used here to avoid referring to the income item using its index
-  public categoryActiveItem: SelectBoxItemType = this.categoryItems
+  public typeActiveItem: SelectBoxItemType = this.typeItems
     .find(({id}) => id === 'income') as SelectBoxItemType;
 
   public constructor() {
@@ -43,8 +43,8 @@ export default class Store {
     this.date = value;
   }
   
-  public setCategoryActiveItem = (item: SelectBoxItemType): void => {
-    this.categoryActiveItem = item;
+  public setTypeActiveItem = (item: SelectBoxItemType): void => {
+    this.typeActiveItem = item;
   }
 
   get isValid(): boolean {
@@ -56,7 +56,7 @@ export default class Store {
   
   get storingParams(): Transaction {
     return {
-      amount: (this.categoryActiveItem.id === 'expense' ? -1 : 1) * parseInt(this.amount),
+      amount: (this.typeActiveItem.id === 'expense' ? -1 : 1) * parseInt(this.amount),
       date: parseDateFromString(this.date),
       description: this.note,
       id: uuid(),

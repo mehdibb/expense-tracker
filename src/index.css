@@ -3,10 +3,49 @@ html, body, #root {
   font-family: 'Quicksand', sans-serif;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  padding-top: 72px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background-color: var(--yellow);
+}
+
+*:hover::-webkit-scrollbar-track {
+  background-color: var(--grey);
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track-piece:end {
+  background: transparent;
 }
 
 :root {

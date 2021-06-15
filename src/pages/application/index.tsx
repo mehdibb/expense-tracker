@@ -1,10 +1,12 @@
 import {
   StyledApplication,
+  ActionsWrapper,
+  FiltersWrapper,
 } from './styles';
 import {CreateTransaction, Header, TransactionsList} from '../../pages';
 import {Store, StoreContext} from '../../lib/store';
 import {useCallback, useMemo} from 'react';
-import {Button, Placeholder} from '../../lib/components';
+import {Button, Placeholder, SelectBox} from '../../lib/components';
 import {Add} from '../../lib/assets/images';
 import {Switch, Route, Redirect, useHistory} from 'react-router'
 import {memo} from '../../lib/utilities';
@@ -29,9 +31,31 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
         <Header />
         <Switch>
           <Route path="/" exact>
-            <Button Icon={Add} onClick={handleCreateTransactionClick}>
-              Add Transaction
-            </Button>
+            <ActionsWrapper>
+              <FiltersWrapper>
+                <SelectBox
+                  items={store.yearFilterItems}
+                  activeItem={store.activeYearFilterItem}
+                  onActiveItemChange={store.setActiveYearFilterItem}
+                  label="Year"
+                />
+                <SelectBox
+                  items={store.monthFilterItems}
+                  activeItem={store.activeMonthFilterItem}
+                  onActiveItemChange={store.setActiveMonthFilterItem}
+                  label="Month"
+                />
+                <SelectBox
+                  items={store.typeFilterItems}
+                  activeItem={store.activeTypeFilterItem}
+                  onActiveItemChange={store.setActiveTypeFilterItem}
+                  label="Type"
+                />
+              </FiltersWrapper>
+              <Button Icon={Add} onClick={handleCreateTransactionClick}>
+                Add Transaction
+              </Button>
+            </ActionsWrapper>
             <TransactionsList />
           </Route>
           <Route path="/home" exact>
