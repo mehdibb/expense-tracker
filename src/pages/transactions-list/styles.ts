@@ -1,3 +1,4 @@
+import {Placeholder} from '#';
 import styled from '@emotion/styled';
 
 
@@ -34,4 +35,8 @@ export const StyledTransactionsList = styled.div`
   align-items: center;
   width: 100%;
   min-height: 0;
+
+  ${Placeholder} {
+    margin-top: 16px;
+  }
 `;

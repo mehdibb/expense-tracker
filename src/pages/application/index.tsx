@@ -4,13 +4,43 @@ import {
   FiltersWrapper,
 } from './styles';
 import {TransactionForm, Header, TransactionsList} from '../../pages';
-import {Store, StoreContext} from '_/store';
-import {useCallback, useMemo} from 'react';
-import {Button, Placeholder, SelectBox} from '#';
+import {Store, StoreContext, Transaction} from '_/store';
+import {useCallback, useContext, useEffect, useMemo} from 'react';
+import {Button, Placeholder, StoredSelectBox, SelectBox} from '#';
 import {Add} from '_/assets/images';
-import {Switch, Route, Redirect} from 'react-router'
+import {Switch, Route, Redirect, useHistory, useLocation, useParams} from 'react-router'
 import {memo} from '_/utilities';
 
+
+interface UpdateTransactionProps {
+  onTransactionNotFound: () => void;
+  onSubmit: () => void;
+  onDelete: (transaction: Transaction) => void;
+  onDiscard: () => void;
+}
+
+function UpdateTransactionComponent({
+  onTransactionNotFound,
+  onSubmit,
+  onDelete,
+  onDiscard,
+}: UpdateTransactionProps): React.ReactElement | null {
+  const store = useContext(StoreContext);
+  const params = useParams<{transactionId: string}>();
+
+  const transaction = useMemo(() => {
+    return store.transactions.find(({id}) => id === params.transactionId)
+  }, []);
+  
+  if (!transaction) {
+    onTransactionNotFound();
+    return null;
+  }
+  
+  return <TransactionForm transaction={transaction} onSubmit={onSubmit} onDelete={onDelete} onDiscard={onDiscard}/>;
+}
+
+const MemoizedUpdateTransactionComponent = memo(UpdateTransactionComponent);
 
 interface Props {
   className?: string;
@@ -19,8 +49,50 @@ interface Props {
 function ApplicationComponent({ className }: Props): React.ReactElement {
   const store = useMemo(() => new Store(), []);
   
+  const history = useHistory();
+  
+  const location = useLocation();
+  
+  useEffect(() => {
+    if (location.pathname === '/create-transaction') {
+      store.setCreatingTransaction();
+    }
+  }, [location]);
+
+  // TODO: find a better way to handle the situation where a transaction is not found
+  const handleTransactionNotFound = useCallback(() => {
+    history.push("/sorry");
+  }, []);
+  
+  const handleCreateTransaction = useCallback(() => {
+    store.createTransaction();
+    history.push("/");
+  }, []);
+
+  const handleUpdateTransaction = useCallback(() => {
+    store.updateTransaction();
+    history.push("/");
+  }, []);
+
+  const handleDeleteTransaction = useCallback((transaction: Transaction) => {
+    store.deleteTransaction(transaction);
+    history.push("/");
+  }, []);
+
+  const handleDiscardTransactionForm = useCallback(() => {
+    if (store.updatingTransaction) {
+      store.updatingTransaction.rollback();
+      history.push("/");
+    }
+    else if (store.creatingTransaction) {
+      store.clearCreatingTransaction();
+      history.push("/");
+    }
+  }, []);
+  
   const handleCreateTransactionClick = useCallback(() => {
     store.setCreatingTransaction();
+    history.push("/create-transaction");
   }, []);
   
   return (
@@ -29,9 +101,7 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
         <Header />
         <Switch>
           <Route path="/" exact>
-            {store.creatingTransaction
-              ? <TransactionForm transaction={store.creatingTransaction} />
-              : <ActionsWrapper>
+            <ActionsWrapper>
               <FiltersWrapper>
                 <SelectBox
                   items={store.yearFilterItems}
@@ -39,29 +109,42 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
                   onActiveItemChange={store.setActiveYearFilterItem}
                   label="Year"
                 />
-                <SelectBox
-                  items={store.monthFilterItems}
-                  activeItem={store.activeMonthFilterItem}
-                  onActiveItemChange={store.setActiveMonthFilterItem}
+                <StoredSelectBox
+                  instance={store.monthFilter}
                   label="Month"
                 />
-                <SelectBox
-                  items={store.typeFilterItems}
-                  activeItem={store.activeTypeFilterItem}
-                  onActiveItemChange={store.setActiveTypeFilterItem}
+                <StoredSelectBox
+                  instance={store.typeFilter}
                   label="Type"
                 />
               </FiltersWrapper>
               <Button Icon={Add} onClick={handleCreateTransactionClick}>
                 Add Transaction
               </Button>
-            </ActionsWrapper>}
+            </ActionsWrapper>
             <TransactionsList />
           </Route>
-          <Route path="/home" exact>
+          <Route path={["/home", "/transactions"]} exact>
             <Redirect to="/"/>
           </Route>
-          <Route path="*">
+          <Route path="/create-transaction">
+            {store.creatingTransaction
+              ? <TransactionForm
+                transaction={store.creatingTransaction}
+                onSubmit={handleCreateTransaction}
+                onDiscard={handleDiscardTransactionForm}
+              />
+              : null}
+          </Route>
+          <Route path="/transactions/:transactionId">
+            <MemoizedUpdateTransactionComponent
+              onTransactionNotFound={handleTransactionNotFound}
+              onSubmit={handleUpdateTransaction}
+              onDelete={handleDeleteTransaction}
+              onDiscard={handleDiscardTransactionForm}
+            />
+          </Route>
+          <Route path={["*", "/sorry"]}>
             <Placeholder description="404 Not Found" />
           </Route>
         </Switch>

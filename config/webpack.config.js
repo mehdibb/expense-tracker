@@ -31,7 +31,8 @@ module.exports = env => {
     output: {
       path: PATH_DIST,
       filename: 'js/[name].[contenthash].js',
-      sourceMapFilename: "[name].js.map"
+      sourceMapFilename: "[name].js.map",
+      publicPath: '/'
     },
 
     devtool: "source-map",

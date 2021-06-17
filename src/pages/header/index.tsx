@@ -28,12 +28,13 @@ function HeaderComponent({className}: Props): React.ReactElement {
   const store = useContext(StoreContext);
   
   const history = useHistory();
-  const location = useLocation();
 
   const handleBackButtonClick = useCallback(() => {
     history.goBack();
   }, []);
 
+  const location = useLocation();
+  
   const handleEditBalance = useCallback(() => setIsEditing(true), []);
 
   const handleDiscardBalance = useCallback(() => {
@@ -62,11 +63,11 @@ function HeaderComponent({className}: Props): React.ReactElement {
   
   return (
     <header className={className}>
-      {location.pathname === "/create-transaction"
-        ? <BackButton Icon={ArrowLeft} flat purple onClick={handleBackButtonClick}>
+      {location.pathname === "/"
+        ? null
+        : <BackButton Icon={ArrowLeft} flat purple onClick={handleBackButtonClick}>
           Back
-        </BackButton>
-        : null}
+        </BackButton>}
       <TopSection>
         <HeaderText>Wallet Balance</HeaderText>
         <StyledDate>

@@ -1,5 +1,5 @@
-import {action, computed, makeObservable} from "mobx";
-import {SelectBoxItemType} from "../../components";
+import {action, computed, makeObservable, observable} from "mobx";
+import {SelectBoxItemType} from "#";
 import InputItem from "./item";
 
 
@@ -14,7 +14,8 @@ export default class SelectableItem extends InputItem {
     makeObservable(this, {
       selectedItem: computed,
       editingItem: computed,
-      setEditingItem: action.bound
+      setEditingItem: action.bound,
+      items: observable,
     });
     this.items = items;
   }

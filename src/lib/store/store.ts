@@ -1,9 +1,9 @@
 import {makeAutoObservable} from "mobx";
 import {ChangeEvent} from "react";
-import {SelectBoxItemType} from "../components";
+import {SelectBoxItemType} from "#";
 import {monthMap} from "../utilities";
 import {Transaction, TransactionStoringParams} from ".";
-import {InputItem} from "./inputs";
+import {InputItem, SelectableItem} from "./inputs";
 
 
 const LOCAL_STORAGE_TRANSACTIONS_KEY = 'transactions';
@@ -23,6 +23,21 @@ class InitialBalance extends InputItem {
   }
 }
 
+class FilterItem extends SelectableItem {
+  public constructor(items: SelectBoxItemType[]) {
+    super(
+      'all',
+      [
+        ...items,
+        {
+          id: 'all',
+          text: 'All'
+        }
+      ]
+    );
+  }
+}
+
 export default class Store {
   public transactions: Transaction[];
 
@@ -30,17 +45,9 @@ export default class Store {
 
   public activeYearFilterItem: SelectBoxItemType;
 
-  public monthFilterItems: SelectBoxItemType[] = [
-    ...Object.entries(monthMap).map(([id, month]) => ({id, text: month})),
-    {
-      id: 'all',
-      text: 'All'
-    }
-  ]
+  public monthFilter = new FilterItem(Object.entries(monthMap).map(([id, month]) => ({id, text: month})));
   
-  public activeMonthFilterItem: SelectBoxItemType;
-
-  public typeFilterItems: SelectBoxItemType[] = [
+  public typeFilter = new FilterItem([
     {
       id: 'income',
       text: 'Income'
@@ -49,13 +56,7 @@ export default class Store {
       id: 'expense',
       text: 'Expense'
     },
-    {
-      id: 'all',
-      text: 'All'
-    }
-  ]
-
-  public activeTypeFilterItem: SelectBoxItemType;
+  ])
 
   public creatingTransaction?: Transaction;
 
@@ -83,8 +84,6 @@ export default class Store {
     }
 
     this.activeYearFilterItem = this.yearFilterItems.find(({id}) => id === 'all') as SelectBoxItemType;
-    this.activeMonthFilterItem = this.monthFilterItems.find(({id}) => id === 'all') as SelectBoxItemType;
-    this.activeTypeFilterItem = this.typeFilterItems.find(({id}) => id === 'all') as SelectBoxItemType;
     
     // TODO: write a reaction to update the localStorage transactions when this.transactions are updated
   }
@@ -112,14 +111,6 @@ export default class Store {
     this.activeYearFilterItem = activeItem;
   }
 
-  public setActiveMonthFilterItem(activeItem: SelectBoxItemType): void {
-    this.activeMonthFilterItem = activeItem;
-  }
-
-  public setActiveTypeFilterItem(activeItem: SelectBoxItemType): void {
-    this.activeTypeFilterItem = activeItem;
-  }
-
   public setCreatingTransaction(): void {
     this.creatingTransaction = new Transaction();
   }
@@ -131,6 +122,25 @@ export default class Store {
   public setUpdatingTransaction(transaction: Transaction): void {
     this.updatingTransaction = transaction;
   }
+
+  public updateTransaction(): void {
+    if (!this.updatingTransaction) {
+      return;
+    }
+    this.updatingTransaction.commit();
+    this.clearUpdatingTransaction();
+    this.setLocalStorageTransactions();
+  }
+
+  public clearUpdatingTransaction(): void {
+    this.updatingTransaction = undefined;
+  }
+
+  public deleteTransaction(transaction: Transaction): void {
+    this.transactions = this.transactions.filter((transaction_) => transaction_ !== transaction);
+    this.clearUpdatingTransaction();
+    this.setLocalStorageTransactions();
+  }
   
   public get totalBalance(): number {
     return parseInt(this.initialBalance.value) + 
@@ -139,14 +149,15 @@ export default class Store {
       }, 0);
   }
 
+  // TODO: make this more readable
   public get transactionsDateMap(): Record<string, Record<string, Transaction[]>> {
     return this.transactions
     .filter(({date}) => this.activeYearFilterItem.id === 'all' ||
       date.dateValue.getFullYear().toString() === this.activeYearFilterItem.id)
-    .filter(({date}) => this.activeMonthFilterItem.id === 'all' ||
-      date.dateValue.getMonth().toString() === this.activeMonthFilterItem.id)
-    .filter(({transactionDirection}) => this.activeTypeFilterItem.id === 'all' ||
-      (this.activeTypeFilterItem.id === transactionDirection.storingParam)
+    .filter(({date}) => this.monthFilter.editingValue === 'all' ||
+      date.dateValue.getMonth().toString() === this.monthFilter.editingValue)
+    .filter(({transactionDirection}) => this.typeFilter.editingValue === 'all' ||
+      (this.typeFilter.editingValue === transactionDirection.storingParam)
       )
     .reduce((accumulator, transaction) => {
       return {
@@ -162,6 +173,7 @@ export default class Store {
     }, {} as Record<string, Record<string, Transaction[]>>);
   }
 
+  // TODO: refactor this after using mobx reaction becomes possible, use FilterItem instead
   public get yearFilterItems(): SelectBoxItemType[] {
     return [
       ...[

@@ -1,30 +1,31 @@
-import {ActionsWrapper, Divider, StyledTransactionForm} from './styles';
+import {ActionsWrapper, Divider, StyledTransactionForm, DeleteButton} from './styles';
 import {Button, StoredTextInput, StoredTextArea, StoredSelectBox} from '#';
-import React, {useCallback, useContext} from 'react';
-import {StoreContext, Transaction} from '_/store';
+import React, {useCallback} from 'react';
+import {Transaction} from '_/store';
 import {memo} from '_/utilities/memo';
-import {useHistory} from 'react-router';
-
 
 
 interface Props {
   className?: string;
   transaction: Transaction;
+  onSubmit: () => void;
+  onDelete?: (transaction: Transaction) => void;
+  onDiscard: () => void;
 }
 
-function TransactionFormComponent({className, transaction}: Props): React.ReactElement {
-  const store = useContext(StoreContext);
-  const history = useHistory();
-  
+function TransactionFormComponent({className, transaction, onSubmit, onDelete, onDiscard}: Props): React.ReactElement {
   const handleCancelClick = useCallback(() => {
-    history.push('/');
-  }, []);
+    onDiscard();
+  }, [onDiscard]);
 
+  const handleDeleteClick = useCallback(() => {
+    onDelete?.(transaction);
+  }, [onDelete, transaction]);
+  
   const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    store.createTransaction();
-    history.push('/');
-  }, []);
+    onSubmit()
+  }, [onSubmit]);
 
   return (
     <form className={className} onSubmit={handleSubmit}>
@@ -41,9 +42,14 @@ function TransactionFormComponent({className, transaction}: Props): React.ReactE
       />
       <Divider />
       <ActionsWrapper>
-        <Button flat onClick={handleCancelClick}>
+        <Button flat onClick={handleCancelClick} type="button">
           Cancel
         </Button>
+        {onDelete
+          ? <DeleteButton flat onClick={handleDeleteClick} type="button">
+            Delete
+          </DeleteButton>
+          : null}
         <Button type="submit" disabled={!transaction.isValid}>
           Save Transaction
         </Button>

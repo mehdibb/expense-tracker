@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {SelectBox} from '#';
+import {Button, SelectBox} from '#';
 
 
 export const Divider = styled.hr`
@@ -7,6 +7,11 @@ export const Divider = styled.hr`
   border: unset;
   border-top: 1px solid var(--light-grey);
   border-bottom: 1px solid var(--light-grey);
+`;
+
+export const DeleteButton = styled(Button)`
+  margin-right: 8px;
+  margin-left: auto;
 `;
 
 export const ActionsWrapper = styled.div`
