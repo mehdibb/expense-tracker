@@ -5,7 +5,7 @@ import {Label} from '../base-input-styles';
 import {memo} from '../../../utilities';
 
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }
 
@@ -25,3 +25,4 @@ function TextInputComponent({label, className, ...props}: Props): React.ReactEle
 }
 
 export default memo(TextInputComponent, StyledTextInput);
+export {default as StoredTextInput} from './stored';

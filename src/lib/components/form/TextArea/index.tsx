@@ -5,7 +5,7 @@ import {v4 as uuid} from 'uuid';
 import {memo} from '../../../utilities';
 
 
-interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
 }
 
@@ -25,3 +25,4 @@ function TextAreaComponent({className, label, ...props}: Props): React.ReactElem
 }
 
 export default memo(TextAreaComponent, StyledTextArea);
+export {default as StoredTextArea} from './stored';

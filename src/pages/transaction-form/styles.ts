@@ -14,7 +14,7 @@ export const ActionsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const StyledCreateTransaction = styled.form`
+export const StyledTransactionForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;

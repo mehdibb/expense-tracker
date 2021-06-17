@@ -11,25 +11,25 @@ interface ItemType {
   text: string;
 }
 
-interface Props<T> {
-  items: T[];
-  onActiveItemChange: (value: T) => void;
-  activeItem: T;
+export interface Props {
+  items: ItemType[];
+  onActiveItemChange: (value: ItemType) => void;
+  activeItem?: ItemType;
   label?: string;
   className?: string;
 }
 
-function SelectBoxComponent<T extends ItemType>({
+function SelectBoxComponent({
   activeItem,
   items,
   onActiveItemChange,
   className,
   label,
-}: Props<T>): React.ReactElement {
+}: Props): React.ReactElement {
   const inputId = useMemo(uuid, []);
   
   const handleChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    onActiveItemChange(items.find(({id}) => event.target.value === id) as T);
+    onActiveItemChange(items.find(({id}) => event.target.value === id) as ItemType);
   }, [onActiveItemChange, items])
   
   return (
@@ -40,10 +40,13 @@ function SelectBoxComponent<T extends ItemType>({
         </Label>
         : null}
         <SelectWrapper>
-          <Select onChange={handleChange} value={activeItem.id}>
+          <Select onChange={handleChange} value={activeItem?.id} defaultValue={activeItem ? undefined : "default"}>
             {items.map(({id, text}) => (
               <option key={id} value={id}>{text}</option>
             ))}
+            {activeItem
+              ? null
+              : <option disabled hidden value="default"/>}
           </Select>
           <IconWrapper><ArrowDropDown /></IconWrapper>
         </SelectWrapper>
@@ -53,3 +56,4 @@ function SelectBoxComponent<T extends ItemType>({
 
 export default memo(SelectBoxComponent, StyledSelectBox);
 export type {ItemType};
+export {default as StoredSelectBox} from './stored';

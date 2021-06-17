@@ -45,6 +45,6 @@ export const StyledApplication = styled.main`
   align-items: center;
   width: 720px;
   min-height: 0;
-  margin: auto;
   padding-bottom: 16px;
+  margin-inline: auto;
 `;

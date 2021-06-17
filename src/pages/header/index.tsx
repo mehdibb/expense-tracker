@@ -11,7 +11,7 @@ import {
   Form,
 } from './styles';
 import {currencyFormat, dateFormat, memo} from '../../lib/utilities';
-import {Button, TextInput} from '../../lib/components';
+import {Button, StoredTextInput} from '../../lib/components';
 import {ArrowLeft, Close, Done, Edit} from '../../lib/assets/images';
 import {useHistory, useLocation} from 'react-router';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
@@ -37,7 +37,7 @@ function HeaderComponent({className}: Props): React.ReactElement {
   const handleEditBalance = useCallback(() => setIsEditing(true), []);
 
   const handleDiscardBalance = useCallback(() => {
-    store.rollback();
+    store.rollbackInitialBalance();
     setIsEditing(false);
   }, []);
 
@@ -76,10 +76,9 @@ function HeaderComponent({className}: Props): React.ReactElement {
       <BottomSection>
       {isEditing
         ? <Form onSubmit={handleSubmitBalance}>
-          <TextInput
+          <StoredTextInput
             type="number"
-            onChange={store.setEditingInitialBalance}
-            value={store.editingInitialBalance}
+            instance={store.initialBalance}
             label="Initial balance:"
           />
           <Button Icon={Close} onClick={handleDiscardBalance} type="button" />
@@ -87,7 +86,7 @@ function HeaderComponent({className}: Props): React.ReactElement {
         </Form>
         : <BalanceWrapper>
           <Balance>
-            {currencyFormat(store.balance)}
+            {currencyFormat(store.totalBalance)}
           </Balance>
           <Button Icon={Edit} onClick={handleEditBalance}/>
         </BalanceWrapper>}

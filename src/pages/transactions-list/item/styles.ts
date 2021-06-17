@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {TransactionDirection} from '../../../lib';
+import {Transaction} from '../../../lib/store';
 
 
 export const Day = styled.span`
@@ -22,12 +22,12 @@ export const Description = styled.span`
   grid-area: description;
 `;
 
-export const Amount = styled.span<{direction: TransactionDirection}>`
+export const Amount = styled.span<{direction: Transaction['transactionDirection']['storingParam']}>`
   align-self: center;
   font-weight: 700;
   grid-area: amount;
   justify-self: end;
-  ${({direction}): string => direction === TransactionDirection.Income
+  ${({direction}): string => direction === 'income'
     ? 'color: var(--green)'
     : 'color: var(--red)'};
 `;

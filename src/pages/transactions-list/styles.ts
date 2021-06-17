@@ -24,7 +24,7 @@ export const TransactionsWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 8px;
+  padding: 0 8px 4px;
   overflow-y: overlay;
 `;
 

@@ -1,3 +1,4 @@
+// FIXME: just accept number/string
 export function currencyFormat(value_: number | string, alwaysShowSign = false): string {
   const value = typeof value_ === 'number' ? value_ : parseInt(value_);
 

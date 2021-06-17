@@ -1,5 +1,6 @@
 import React from 'react';
-import {currencyFormat, dateFormat, Transaction, TransactionDirection} from '../../../lib';
+import {dateFormat} from '../../../lib/utilities';
+import {Transaction} from '../../../lib/store';
 import {
   StyledTransactionsListItem,
   Amount,
@@ -19,11 +20,11 @@ function TransactionsListItemComponent({className, item}: Props): React.ReactEle
   
   return (
     <li className={className}>
-      <Day>{dateFormat(item.date, {day: true, twoDigitDay: true})}</Day>
-      <Type>{item.amount > 0 ? 'Income' : 'Expense'}</Type>
-      <Description>{item.description}</Description>
-      <Amount direction={item.amount > 0 ? TransactionDirection.Income : TransactionDirection.Expense}>
-        {currencyFormat(item.amount, true)}
+      <Day>{dateFormat(item.date.dateValue, {day: true, twoDigitDay: true})}</Day>
+      <Type>{item.transactionDirection.selectedItem?.text}</Type>
+      <Description>{item.description.value}</Description>
+      <Amount direction={item.transactionDirection.storingParam}>
+        {item.displayAmount}
       </Amount>
     </li>
   )

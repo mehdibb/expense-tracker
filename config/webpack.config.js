@@ -98,6 +98,9 @@ module.exports = env => {
       ],
     },
 
+    // TODO: revert this and use lazy loads
+    performance: {hints: false},
+    
     plugins: [
       new HTMLWebpackPlugin({
         template: path.join(PATH_SOURCE, './index.html'),

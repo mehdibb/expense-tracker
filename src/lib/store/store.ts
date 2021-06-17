@@ -1,19 +1,32 @@
 import {makeAutoObservable} from "mobx";
-import React from "react";
+import {ChangeEvent} from "react";
 import {SelectBoxItemType} from "../components";
 import {monthMap} from "../utilities";
-import {Transaction} from "../utilities/types";
+import {Transaction, TransactionStoringParams} from ".";
+import {InputItem} from "./inputs";
 
 
 const LOCAL_STORAGE_TRANSACTIONS_KEY = 'transactions';
 const LOCAL_STORAGE_INITIAL_BALANCE_KEY = 'initial-balance';
 
+class InitialBalance extends InputItem {
+  public handleChange(event: ChangeEvent<HTMLInputElement>): void {
+    if (
+      // FIXME: 2 decimals should be allowed as well
+      parseInt(event.target.value) < 0 ||
+      event.target.value.length >= (Number.MAX_SAFE_INTEGER).toString().length - 1
+    ) {
+      return;
+    }
+    
+    this.setEditingValue(parseInt(event.target.value || "0").toString())
+  }
+}
+
 export default class Store {
   public transactions: Transaction[];
 
-  public initialBalance: string;
-
-  public editingInitialBalance: string;
+  public initialBalance = new InitialBalance();
 
   public activeYearFilterItem: SelectBoxItemType;
 
@@ -44,31 +57,30 @@ export default class Store {
 
   public activeTypeFilterItem: SelectBoxItemType;
 
+  public creatingTransaction?: Transaction;
+
+  public updatingTransaction?: Transaction;
+  
   public constructor() {
     makeAutoObservable(this, {}, {autoBind: true});
     const transactions = localStorage.getItem(LOCAL_STORAGE_TRANSACTIONS_KEY);
     const initialBalance = localStorage.getItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY);
 
     if (transactions != null) {
-      // TODO: implement a Transaction class to move this inside its constructor
-      this.transactions = (JSON.parse(transactions) as Transaction[]).map((transaction) => ({
-        ...transaction,
-        date: new Date(transaction.date),
-      }));
+      this.transactions = (JSON.parse(transactions) as TransactionStoringParams[])
+        .map((transaction) => new Transaction(transaction));
     }
     else {
       this.transactions = [];
       this.setLocalStorageTransactions();
     }
 
-    if (initialBalance != null) {
-      this.initialBalance = JSON.parse(initialBalance);
+    if (initialBalance != null && initialBalance !== "") {
+      this.initialBalance.setValue(JSON.parse(initialBalance));
     }
     else {
-      this.initialBalance = "0";
       this.setLocalStorageInitialBalance();
     }
-    this.editingInitialBalance = this.initialBalance;
 
     this.activeYearFilterItem = this.yearFilterItems.find(({id}) => id === 'all') as SelectBoxItemType;
     this.activeMonthFilterItem = this.monthFilterItems.find(({id}) => id === 'all') as SelectBoxItemType;
@@ -76,30 +88,24 @@ export default class Store {
     
     // TODO: write a reaction to update the localStorage transactions when this.transactions are updated
   }
-  
-  public setEditingInitialBalance(event: React.ChangeEvent<HTMLInputElement>): void {
-    if (
-      parseInt(event.target.value) < 0 ||
-      event.target.value.length >= (Number.MAX_SAFE_INTEGER).toString().length - 1
-    ) {
-      return;
-    }
-    // FIXME: 2 decimals should be allowed as well
-    this.editingInitialBalance = parseInt(event.target.value || "0").toString();
-  }
 
   public updateInitialBalance(): void {
-    this.initialBalance = this.editingInitialBalance;
+    this.initialBalance.commit();
     this.setLocalStorageInitialBalance();
   }
 
-  public rollback(): void {
-    this.editingInitialBalance = this.initialBalance;
+  public rollbackInitialBalance(): void {
+    this.initialBalance.rollback();
   }
 
-  public createTransaction(transaction: Transaction): void {
-    this.transactions.push(transaction);
+  public createTransaction(): void {
+    if (!this.creatingTransaction) {
+      return;
+    }
+    this.creatingTransaction.commit();
+    this.transactions.push(this.creatingTransaction);
     this.setLocalStorageTransactions();
+    this.clearCreatingTransaction();
   }
 
   public setActiveYearFilterItem(activeItem: SelectBoxItemType): void {
@@ -113,28 +119,42 @@ export default class Store {
   public setActiveTypeFilterItem(activeItem: SelectBoxItemType): void {
     this.activeTypeFilterItem = activeItem;
   }
+
+  public setCreatingTransaction(): void {
+    this.creatingTransaction = new Transaction();
+  }
+
+  public clearCreatingTransaction(): void {
+    this.creatingTransaction = undefined;
+  }
   
-  public get balance(): number {
-    return parseInt(this.initialBalance) + 
-      this.transactions.reduce((total, {amount}) => total + amount, 0);
+  public setUpdatingTransaction(transaction: Transaction): void {
+    this.updatingTransaction = transaction;
+  }
+  
+  public get totalBalance(): number {
+    return parseInt(this.initialBalance.value) + 
+      this.transactions.reduce((total, {amount, transactionDirection}) => {
+        return total + amount.integerValue * (transactionDirection.storingParam === 'income' ? 1 : -1)
+      }, 0);
   }
 
   public get transactionsDateMap(): Record<string, Record<string, Transaction[]>> {
     return this.transactions
     .filter(({date}) => this.activeYearFilterItem.id === 'all' ||
-      date.getFullYear().toString() === this.activeYearFilterItem.id)
+      date.dateValue.getFullYear().toString() === this.activeYearFilterItem.id)
     .filter(({date}) => this.activeMonthFilterItem.id === 'all' ||
-      date.getMonth().toString() === this.activeMonthFilterItem.id)
-    .filter(({amount}) => this.activeTypeFilterItem.id === 'all' ||
-      (this.activeTypeFilterItem.id === 'income' ? amount > 0 : amount < 0)
+      date.dateValue.getMonth().toString() === this.activeMonthFilterItem.id)
+    .filter(({transactionDirection}) => this.activeTypeFilterItem.id === 'all' ||
+      (this.activeTypeFilterItem.id === transactionDirection.storingParam)
       )
     .reduce((accumulator, transaction) => {
       return {
         ...accumulator,
-        [transaction.date.getFullYear()]: {
-          ...accumulator[transaction.date.getFullYear()] || [],
-          [transaction.date.getMonth()]: [
-            ...accumulator[transaction.date.getFullYear()]?.[transaction.date.getMonth()] || [],
+        [transaction.date.dateValue.getFullYear()]: {
+          ...accumulator[transaction.date.dateValue.getFullYear()] || [],
+          [transaction.date.dateValue.getMonth()]: [
+            ...accumulator[transaction.date.dateValue.getFullYear()]?.[transaction.date.dateValue.getMonth()] || [],
             transaction
           ]
         }
@@ -146,7 +166,7 @@ export default class Store {
     return [
       ...[
         ...new Set(
-          this.transactions.map(({date}) => date.getFullYear()),
+          this.transactions.map(({date}) => date.dateValue.getFullYear()),
         )
       ].sort((firstYear, secondYear) => secondYear - firstYear)
       .map((year) => ({
@@ -161,10 +181,13 @@ export default class Store {
   }
   
   private setLocalStorageTransactions(): void {
-    localStorage.setItem(LOCAL_STORAGE_TRANSACTIONS_KEY, JSON.stringify(this.transactions));
+    localStorage.setItem(
+      LOCAL_STORAGE_TRANSACTIONS_KEY,
+      JSON.stringify(this.transactions.map((transaction) => transaction.storingParams)),
+    );
   }
 
   private setLocalStorageInitialBalance(): void {
-    localStorage.setItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY, JSON.stringify(this.initialBalance));
+    localStorage.setItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY, JSON.stringify(this.initialBalance.value || "0"));
   }
 }

@@ -1,4 +1,4 @@
-export {default as TextInput} from './TextInput';
-export {default as TextArea} from './TextArea';
-export {default as SelectBox} from './SelectBox';
+export {default as TextInput, StoredTextInput} from './TextInput';
+export {default as TextArea, StoredTextArea} from './TextArea';
+export {default as SelectBox, StoredSelectBox} from './SelectBox';
 export type {ItemType as SelectBoxItemType} from './SelectBox';

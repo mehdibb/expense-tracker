@@ -5,6 +5,7 @@
     "sourceType": "module"
   },
   "plugins": [
+    "typescript",
     "@typescript-eslint",
     "react-hooks",
     "react"

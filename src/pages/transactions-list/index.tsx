@@ -28,7 +28,10 @@ function TransactionsListComponent({className}: Props): React.ReactElement {
                 <React.Fragment key={month}>
                   <MonthSection>{monthMap[month]}</MonthSection>
                   {store.transactionsDateMap[year][month]
-                    .sort(({date: firstDate}, {date: secondDate}) => secondDate.getDay() - firstDate.getDay())
+                    .sort((
+                      {date: {dateValue: firstDate}},
+                      {date: {dateValue: secondDate}},
+                    ) => secondDate.getDay() - firstDate.getDay())
                     .map((transaction) => (
                       <Item key={transaction.id} item={transaction}/>
                     ))}
