@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import {Button, SelectBox} from '../../lib/components';
-import {SelectWrapper} from '../../lib/components/form/SelectBox/styles';
+import {Button, SelectBox} from '#';
+import {SelectWrapper} from '#/form/SelectBox/styles';
 
 
 export const FiltersWrapper = styled.div`

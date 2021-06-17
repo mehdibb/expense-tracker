@@ -38,6 +38,10 @@ module.exports = env => {
     
     resolve: {
       extensions: [".tsx", ".ts", ".js", ".json"],
+      alias: {
+        "#": path.resolve(__dirname, '../src/lib/components'),
+        "_": path.resolve(__dirname, '../src/lib'),
+      }
     },
 
     module: {

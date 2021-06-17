@@ -1,6 +1,6 @@
 import React from 'react';
-import {dateFormat} from '../../../lib/utilities';
-import {Transaction} from '../../../lib/store';
+import {dateFormat} from '_/utilities';
+import {Transaction} from '_/store';
 import {
   StyledTransactionsListItem,
   Amount,
@@ -8,7 +8,7 @@ import {
   Description,
   Type,
 } from './styles';
-import {memo} from '../../../lib/utilities';
+import {memo} from '_/utilities';
 
 
 interface Props {

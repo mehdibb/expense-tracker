@@ -1,8 +1,8 @@
 import {ActionsWrapper, Divider, StyledTransactionForm} from './styles';
-import {Button, StoredTextInput, StoredTextArea, StoredSelectBox} from '../../lib/components';
+import {Button, StoredTextInput, StoredTextArea, StoredSelectBox} from '#';
 import React, {useCallback, useContext} from 'react';
-import {StoreContext, Transaction} from '../../lib/store';
-import {memo} from '../../lib/utilities/memo';
+import {StoreContext, Transaction} from '_/store';
+import {memo} from '_/utilities/memo';
 import {useHistory} from 'react-router';
 
 

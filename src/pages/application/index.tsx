@@ -4,12 +4,12 @@ import {
   FiltersWrapper,
 } from './styles';
 import {TransactionForm, Header, TransactionsList} from '../../pages';
-import {Store, StoreContext} from '../../lib/store';
+import {Store, StoreContext} from '_/store';
 import {useCallback, useMemo} from 'react';
-import {Button, Placeholder, SelectBox} from '../../lib/components';
-import {Add} from '../../lib/assets/images';
+import {Button, Placeholder, SelectBox} from '#';
+import {Add} from '_/assets/images';
 import {Switch, Route, Redirect} from 'react-router'
-import {memo} from '../../lib/utilities';
+import {memo} from '_/utilities';
 
 
 interface Props {

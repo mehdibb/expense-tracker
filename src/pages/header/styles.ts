@@ -1,6 +1,6 @@
 import {css, SerializedStyles} from '@emotion/react';
 import styled from '@emotion/styled';
-import {Button, TextInput} from '../../lib/components';
+import {Button, TextInput} from '#';
 
 
 export const BackButton = styled(Button)`

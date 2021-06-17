@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {SelectBox} from '../../lib/components';
+import {SelectBox} from '#';
 
 
 export const Divider = styled.hr`

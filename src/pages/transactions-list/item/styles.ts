@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Transaction} from '../../../lib/store';
+import {Transaction} from '_/store';
 
 
 export const Day = styled.span`

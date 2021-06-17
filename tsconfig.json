@@ -22,7 +22,14 @@
       "jsx": "preserve",
       "useDefineForClassFields": true,
       "experimentalDecorators": true,
-      "outDir": "src/dist"
+      "outDir": "src/dist",
+      "baseUrl": "src",
+      "paths": {
+        "#": ["lib/components"],
+        "#/*": ["lib/components/*"],
+        "_": ["lib"],
+        "_/*": ["lib/*"]
+      }
   },
   "include": [
       "src",

@@ -1,9 +1,9 @@
 import {useContext, useMemo} from 'react';
-import {StoreContext} from '../../lib/store';
+import {StoreContext} from '_/store';
 import {MonthSection, StyledTransactionsList, TransactionsWrapper, YearSection} from './styles';
 import Item from './item';
-import {Placeholder} from '../../lib/components';
-import {memo, monthMap} from '../../lib/utilities';
+import {Placeholder} from '#';
+import {memo, monthMap} from '_/utilities';
 import React from 'react';
 
 

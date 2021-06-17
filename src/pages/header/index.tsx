@@ -10,12 +10,12 @@ import {
   Balance,
   Form,
 } from './styles';
-import {currencyFormat, dateFormat, memo} from '../../lib/utilities';
-import {Button, StoredTextInput} from '../../lib/components';
-import {ArrowLeft, Close, Done, Edit} from '../../lib/assets/images';
+import {currencyFormat, dateFormat, memo} from '_/utilities';
+import {Button, StoredTextInput} from '#';
+import {ArrowLeft, Close, Done, Edit} from '_/assets/images';
 import {useHistory, useLocation} from 'react-router';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {StoreContext} from '../../lib/store';
+import {StoreContext} from '_/store';
 
 
 interface Props {
