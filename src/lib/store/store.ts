@@ -149,7 +149,19 @@ export default class Store {
     this.clearUpdatingTransaction();
     this.setLocalStorageTransactions();
   }
-  
+
+  public get filtersEdited(): boolean {
+    return this.activeYearFilterItem.id !== 'all' ||
+      this.monthFilter.editingValue !== 'all' ||
+      this.typeFilter.editingValue !== 'all';
+  }
+
+  public resetFilters(): void {
+    this.setActiveYearFilterItem(this.yearFilterItems.find(({id}) => id === 'all') as SelectBoxItemType);
+    this.monthFilter.setEditingValue('all');
+    this.typeFilter.setEditingValue('all');
+  }
+
   public get totalBalance(): number {
     return parseFloatWithTwoDecimal(this.initialBalance.value || "0") + 
       this.transactions.reduce((total, {signedAmount}) => total + signedAmount, 0);

@@ -6,15 +6,13 @@ import {SelectWrapper} from '#/form/SelectBox/styles';
 export const FiltersWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  align-items: flex-end;
   width: 100%;
 
   ${SelectBox} {
     width: 120px;
+    margin-right: 8px;
     margin-bottom: unset;
-
-    :not(:last-of-type) {
-      margin-right: 8px;
-    }
 
     select {
       padding: 8px;

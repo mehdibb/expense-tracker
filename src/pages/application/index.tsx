@@ -97,6 +97,10 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
     store.setCreatingTransaction();
     history.push("/create-transaction");
   }, []);
+
+  const handleResetButtonClick = useCallback(() => {
+    store.resetFilters();
+  }, []);
   
   return (
     <main className={className}>
@@ -120,6 +124,11 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
                   instance={store.typeFilter}
                   label="Type"
                 />
+                {store.filtersEdited
+                  ? <Button type="button" flat onClick={handleResetButtonClick}>
+                    Reset
+                  </Button>
+                  : null}
               </FiltersWrapper>
               <Button Icon={Add} onClick={handleCreateTransactionClick}>
                 Add Transaction
