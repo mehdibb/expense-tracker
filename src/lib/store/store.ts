@@ -1,25 +1,33 @@
 import {makeAutoObservable} from "mobx";
 import {ChangeEvent} from "react";
 import {SelectBoxItemType} from "#";
-import {monthMap} from "../utilities";
+import {monthMap, parseFloatWithTwoDecimal} from "_/utilities";
 import {Transaction, TransactionStoringParams} from ".";
 import {InputItem, SelectableItem} from "./inputs";
 
 
-const LOCAL_STORAGE_TRANSACTIONS_KEY = 'transactions';
-const LOCAL_STORAGE_INITIAL_BALANCE_KEY = 'initial-balance';
+export const LOCAL_STORAGE_TRANSACTIONS_KEY = 'transactions';
+export const LOCAL_STORAGE_INITIAL_BALANCE_KEY = 'initial-balance';
 
 class InitialBalance extends InputItem {
   public handleChange(event: ChangeEvent<HTMLInputElement>): void {
-    if (
-      // FIXME: 2 decimals should be allowed as well
-      parseInt(event.target.value) < 0 ||
-      event.target.value.length >= (Number.MAX_SAFE_INTEGER).toString().length - 1
-    ) {
-      return;
-    }
+    const parsedValue = parseFloatWithTwoDecimal(event.target.value);
     
-    this.setEditingValue(parseInt(event.target.value || "0").toString())
+    if (parsedValue < 0) {
+      this.setCustomError("Initial balance cannot be less than zero.");
+    }
+    else if (event.target.value.length >= Number.MAX_SAFE_INTEGER.toString().length - 1) {
+      this.setCustomError(`Entered value should be less than ${Number.MAX_SAFE_INTEGER.toString().length} digits.`);
+    }
+    // eslint-disable-next-line no-useless-escape
+    else if (!/^\-?[0-9]+(e[0-9]+)?(\.[0-9]+)?$/.test(event.target.value)) {
+      this.setCustomError("Enter a valid number.");
+    }
+    else {
+      this.clearCustomError();
+    }
+
+    this.setEditingValue(event.target.value);
   }
 }
 
@@ -28,11 +36,11 @@ class FilterItem extends SelectableItem {
     super(
       'all',
       [
-        ...items,
         {
           id: 'all',
           text: 'All'
-        }
+        },
+        ...items
       ]
     );
   }
@@ -77,7 +85,7 @@ export default class Store {
     }
 
     if (initialBalance != null && initialBalance !== "") {
-      this.initialBalance.setValue(JSON.parse(initialBalance));
+      this.initialBalance.setValue(parseFloatWithTwoDecimal(JSON.parse(initialBalance)).toString());
     }
     else {
       this.setLocalStorageInitialBalance();
@@ -143,13 +151,10 @@ export default class Store {
   }
   
   public get totalBalance(): number {
-    return parseInt(this.initialBalance.value) + 
-      this.transactions.reduce((total, {amount, transactionDirection}) => {
-        return total + amount.integerValue * (transactionDirection.storingParam === 'income' ? 1 : -1)
-      }, 0);
+    return parseFloatWithTwoDecimal(this.initialBalance.value || "0") + 
+      this.transactions.reduce((total, {signedAmount}) => total + signedAmount, 0);
   }
 
-  // TODO: make this more readable
   public get transactionsDateMap(): Record<string, Record<string, Transaction[]>> {
     return this.transactions
     .filter(({date}) => this.activeYearFilterItem.id === 'all' ||
@@ -159,18 +164,16 @@ export default class Store {
     .filter(({transactionDirection}) => this.typeFilter.editingValue === 'all' ||
       (this.typeFilter.editingValue === transactionDirection.storingParam)
       )
-    .reduce((accumulator, transaction) => {
-      return {
-        ...accumulator,
-        [transaction.date.dateValue.getFullYear()]: {
-          ...accumulator[transaction.date.dateValue.getFullYear()] || [],
-          [transaction.date.dateValue.getMonth()]: [
-            ...accumulator[transaction.date.dateValue.getFullYear()]?.[transaction.date.dateValue.getMonth()] || [],
-            transaction
-          ]
-        }
+    .reduce((accumulator, transaction) => ({
+      ...accumulator,
+      [transaction.date.dateValue.getFullYear()]: {
+        ...accumulator[transaction.date.dateValue.getFullYear()] || [],
+        [transaction.date.dateValue.getMonth() ]: [
+          ...accumulator[transaction.date.dateValue.getFullYear()]?.[transaction.date.dateValue.getMonth()] || [],
+          transaction
+        ]
       }
-    }, {} as Record<string, Record<string, Transaction[]>>);
+    }), {} as Record<string, Record<string, Transaction[]>>);
   }
 
   // TODO: refactor this after using mobx reaction becomes possible, use FilterItem instead
@@ -200,6 +203,6 @@ export default class Store {
   }
 
   private setLocalStorageInitialBalance(): void {
-    localStorage.setItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY, JSON.stringify(this.initialBalance.value || "0"));
+    localStorage.setItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY, JSON.stringify(this.initialBalance.value || "0.00"));
   }
 }

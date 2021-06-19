@@ -1,6 +1,6 @@
-import {InputItem} from "../../../store";
+import {InputItem} from "_/store";
 import TextArea, {Props as InputProps} from '.';
-import {memo} from "../../../utilities/memo";
+import {memo} from "_/utilities/memo";
 
 
 interface Props extends Omit<InputProps, 'value' | 'onChange'> {

@@ -1,6 +1,6 @@
-import {SelectableItem} from "../../../store";
+import {SelectableItem} from "_/store";
 import SelectBox, {Props as SelectBoxProps} from '.';
-import {memo} from "../../../utilities/memo";
+import {memo} from "_/utilities/memo";
 
 
 interface Props extends Omit<SelectBoxProps, 'items' | 'onActiveItemChange'> {

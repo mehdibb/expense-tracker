@@ -33,6 +33,7 @@ function TransactionFormComponent({className, transaction, onSubmit, onDelete, o
         type="number"
         label="Enter amount"
         instance={transaction.amount}
+        step="0.01"
         />
       <StoredTextArea label="Note" instance={transaction.description}/>
       <StoredTextInput type="date" label="Date" instance={transaction.date}/>

@@ -36,6 +36,9 @@ function UpdateTransactionComponent({
     onTransactionNotFound();
     return null;
   }
+  else {
+    store.setUpdatingTransaction(transaction);
+  }
   
   return <TransactionForm transaction={transaction} onSubmit={onSubmit} onDelete={onDelete} onDiscard={onDiscard}/>;
 }

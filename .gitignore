@@ -1,3 +1,5 @@
 dist
 node_modules
 yarn-error.log
+jest_html_reporters.html
+yarn.lock

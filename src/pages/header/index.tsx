@@ -62,7 +62,7 @@ function HeaderComponent({className}: Props): React.ReactElement {
   }, []);
   
   return (
-    <header className={className}>
+    <header className={className} data-testid="application-header">
       {location.pathname === "/"
         ? null
         : <BackButton Icon={ArrowLeft} flat purple onClick={handleBackButtonClick}>
@@ -78,18 +78,17 @@ function HeaderComponent({className}: Props): React.ReactElement {
       {isEditing
         ? <Form onSubmit={handleSubmitBalance}>
           <StoredTextInput
-            type="number"
             instance={store.initialBalance}
             label="Initial balance:"
           />
-          <Button Icon={Close} onClick={handleDiscardBalance} type="button" />
-          <Button Icon={Done} type="submit" />
+          <Button Icon={Close} title="Discard" onClick={handleDiscardBalance} type="button" />
+          <Button Icon={Done} title="Save" type="submit" disabled={!store.initialBalance.isValid}/>
         </Form>
         : <BalanceWrapper>
-          <Balance>
+          <Balance title="total balance">
             {currencyFormat(store.totalBalance)}
           </Balance>
-          <Button Icon={Edit} onClick={handleEditBalance}/>
+          <Button Icon={Edit} title="Edit" onClick={handleEditBalance}/>
         </BalanceWrapper>}
         <Currency>USD</Currency>
       </BottomSection>

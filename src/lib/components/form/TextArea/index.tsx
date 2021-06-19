@@ -2,7 +2,7 @@ import {StyledTextArea, TextArea} from './styles';
 import {Label} from '../base-input-styles';
 import {useMemo} from 'react';
 import {v4 as uuid} from 'uuid';
-import {memo} from '../../../utilities';
+import {memo} from '_/utilities';
 
 
 export interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -19,7 +19,7 @@ function TextAreaComponent({className, label, ...props}: Props): React.ReactElem
           {label}
         </Label>
         : null}
-      <TextArea {...props} />
+      <TextArea {...props} id={inputId} />
     </div>
   )
 }

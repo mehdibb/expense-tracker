@@ -2,8 +2,8 @@ import React, {useCallback, useMemo} from 'react';
 import {Select, StyledSelectBox, SelectWrapper, IconWrapper} from './styles';
 import {v4 as uuid} from 'uuid';
 import {Label} from '../base-input-styles';
-import {ArrowDropDown} from '../../../assets/images';
-import {memo} from '../../../utilities';
+import {ArrowDropDown} from '_/assets/images';
+import {memo} from '_/utilities';
 
 
 interface ItemType {
@@ -40,7 +40,12 @@ function SelectBoxComponent({
         </Label>
         : null}
         <SelectWrapper>
-          <Select onChange={handleChange} value={activeItem?.id} defaultValue={activeItem ? undefined : "default"}>
+          <Select
+            onChange={handleChange}
+            value={activeItem?.id}
+            defaultValue={activeItem ? undefined : "default"}
+            id={inputId}
+          >
             {items.map(({id, text}) => (
               <option key={id} value={id}>{text}</option>
             ))}

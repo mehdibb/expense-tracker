@@ -9,6 +9,8 @@ export default class InputItem {
 
   public required: boolean;
 
+  public customError?: string;
+
   public constructor(initialValue?: string, required = false) {
     makeObservable(this, {
       commit: action.bound,
@@ -18,6 +20,9 @@ export default class InputItem {
       setEditingValue: action.bound,
       setValue: action.bound,
       value: observable,
+      customError: observable,
+      setCustomError: action.bound,
+      clearCustomError: action.bound,
     });
     if (initialValue != null) {
       this.value = initialValue;
@@ -43,6 +48,14 @@ export default class InputItem {
     this.editingValue = value;
   }
 
+  public setCustomError(errorValue: string): void {
+    this.customError = errorValue;
+  }
+
+  public clearCustomError(): void {
+    this.customError = undefined;
+  }
+  
   public commit(): void {
     this.value = this.editingValue;
   }
@@ -52,6 +65,6 @@ export default class InputItem {
   }
 
   public get isValid(): boolean {
-    return !this.required && this.editingValue !== ''
+    return !this.required && this.editingValue !== '' && !this.customError
   }
 }

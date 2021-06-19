@@ -27,7 +27,7 @@ function TransactionsListItemComponent({className, item, onActivate}: Props): Re
       <Day>{dateFormat(item.date.dateValue, {day: true, twoDigitDay: true})}</Day>
       <Type>{item.transactionDirection.selectedItem?.text}</Type>
       <Description>{item.description.value}</Description>
-      <Amount direction={item.transactionDirection.storingParam}>
+      <Amount direction={item.transactionDirection.storingParam} data-testid="transaction-amount">
         {item.displayAmount}
       </Amount>
     </li>

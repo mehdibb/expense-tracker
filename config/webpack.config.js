@@ -1,4 +1,3 @@
-/* eslint-disable */
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -103,7 +102,7 @@ module.exports = env => {
       ],
     },
 
-    // TODO: revert this and use lazy loads
+    // TODO: revert this and use lazy loading
     performance: {hints: false},
     
     plugins: [

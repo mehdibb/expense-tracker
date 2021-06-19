@@ -45,10 +45,10 @@ function TransactionsListComponent({className}: Props): React.ReactElement {
             ))}
           </React.Fragment>
         ))
-  }, [store.transactions.length, store.transactionsDateMap]);
+  }, [store.transactions, store.transactionsDateMap]);
   
   return (
-    <div className={className}>
+    <div className={className} data-testid="transactions-list">
       {Object.entries(store.transactionsDateMap).length === 0
         ? <Placeholder description="No transactions."/>
         : <TransactionsWrapper>

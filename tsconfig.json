@@ -19,7 +19,7 @@
       "resolveJsonModule": true,
       "isolatedModules": true,
       "noEmit": false,
-      "jsx": "preserve",
+      "jsx": "react-jsx",
       "useDefineForClassFields": true,
       "experimentalDecorators": true,
       "outDir": "src/dist",

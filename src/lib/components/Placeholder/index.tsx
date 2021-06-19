@@ -1,5 +1,5 @@
 import {StyledPlaceholder} from './styles';
-import {memo} from '../../utilities';
+import {memo} from '_/utilities';
 
 
 interface Props {

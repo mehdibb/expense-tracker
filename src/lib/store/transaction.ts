@@ -1,31 +1,31 @@
-import {Transaction as TransactionType} from "../utilities/types";
+import {Transaction as TransactionType} from "_/utilities/types";
 import {v4 as uuid} from 'uuid';
 import {computed, makeAutoObservable, makeObservable} from "mobx";
 import {InputItem, DateItem} from ".";
 import {ChangeEvent} from "react";
 import {SelectableItem} from "./inputs";
-import {currencyFormat} from "../utilities";
+import {currencyFormat, parseFloatWithTwoDecimal} from "_/utilities";
 
 
 class Amount extends InputItem {
   public constructor(...constructorArgs: ConstructorParameters<typeof InputItem>) {
     super(...constructorArgs);
     makeObservable(this, {
-      integerValue: computed,
-      integerEditingValue: computed,
+      floatValue: computed,
+      floatEditingValue: computed,
     })
   }
   
-  public get integerValue(): number {
-    return parseInt(this.value);
+  public get floatValue(): number {
+    return parseFloatWithTwoDecimal(this.value);
   }
 
-  public get integerEditingValue(): number {
-    return parseInt(this.editingValue);
+  public get floatEditingValue(): number {
+    return parseFloatWithTwoDecimal(this.editingValue);
   }
 
   public handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
-    if (parseInt(event.target.value) < 0) {
+    if (parseFloatWithTwoDecimal(event.target.value) <= 0) {
       return;
     }
     super.handleChange(event);
@@ -94,7 +94,11 @@ export default class Transaction {
   }
 
   public get displayAmount(): string {
-    return currencyFormat(this.amount.integerValue * (this.transactionDirection.value === 'income' ? 1 : -1), true);
+    return currencyFormat(this.signedAmount, true);
+  }
+
+  public get signedAmount(): number {
+    return this.amount.floatValue * (this.transactionDirection.storingParam === 'income' ? 1 : -1);
   }
   
   public get isValid(): boolean {

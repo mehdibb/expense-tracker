@@ -1,6 +1,6 @@
-import {InputItem} from "../../../store";
+import {InputItem} from "_/store";
 import Input, {Props as InputProps} from '.';
-import {memo} from "../../../utilities/memo";
+import {memo} from "_/utilities/memo";
 
 
 interface Props extends Omit<InputProps, 'value' | 'onChange'> {
@@ -17,6 +17,7 @@ function StoredTextInput({
     <Input
       value={instance.editingValue}
       onChange={instance.handleChange}
+      error={instance.customError}
       {...props}
     />
   )
