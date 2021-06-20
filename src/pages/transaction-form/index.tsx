@@ -28,30 +28,30 @@ function TransactionFormComponent({className, transaction, onSubmit, onDelete, o
   }, [onSubmit]);
 
   return (
-    <form className={className} onSubmit={handleSubmit} data-testid="transaction-form">
+    <form className={className} onSubmit={handleSubmit} data-testid='transaction-form'>
       <StoredTextInput
-        type="number"
-        label="Enter amount"
+        type='number'
+        label='Enter amount'
         instance={transaction.amount}
-        step="0.01"
-        />
-      <StoredTextArea label="Note" instance={transaction.description}/>
-      <StoredTextInput type="date" label="Date" instance={transaction.date}/>
+        step='0.01'
+      />
+      <StoredTextArea label='Note' instance={transaction.description}/>
+      <StoredTextInput type='date' label='Date' instance={transaction.date}/>
       <StoredSelectBox
         instance={transaction.transactionDirection}
         label='Category'
       />
       <Divider />
       <ActionsWrapper>
-        <Button flat onClick={handleCancelClick} type="button">
+        <Button flat onClick={handleCancelClick} type='button'>
           Cancel
         </Button>
         {onDelete
-          ? <DeleteButton flat onClick={handleDeleteClick} type="button">
+          ? <DeleteButton flat onClick={handleDeleteClick} type='button'>
             Delete
           </DeleteButton>
           : null}
-        <Button type="submit" disabled={!transaction.isValid}>
+        <Button type='submit' disabled={!transaction.isValid}>
           Save Transaction
         </Button>
       </ActionsWrapper>

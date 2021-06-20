@@ -1,4 +1,4 @@
-import {parseFloatWithTwoDecimal} from "../number";
+import {parseFloatWithTwoDecimal} from '../number';
 
 
 export function currencyFormat(value_: number, alwaysShowSign = false): string {

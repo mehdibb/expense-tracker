@@ -27,7 +27,6 @@ export const StyledButton = styled(
         background-color: var(--dark-yellow);
       }
     `}
-    // TODO: implement different button styles
     ${flat && purple && !disabled
       ? `
         :hover {
@@ -44,31 +43,7 @@ export const StyledButton = styled(
             text-decoration: underline;
           }
         `
-        : flat && purple && disabled
-          ? `
-
-          `
-          : flat && !purple && disabled
-            ? `
-            
-            `
-            : !flat && purple && disabled
-              ? `
-              
-              `
-              : !flat && purple && !disabled
-                ? `
-                
-                `
-                : !flat && !purple && disabled
-                  ? `
-                  
-                  `
-                  : !flat && !purple && !disabled
-                    ? `
-                    
-                    `
-                    : ''
+        : ''
         }
     
     svg {

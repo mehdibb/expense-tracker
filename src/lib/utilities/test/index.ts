@@ -1,6 +1,6 @@
-import {fireEvent} from "@testing-library/react";
+import {fireEvent} from '@testing-library/react';
 import faker from 'faker';
-import {TransactionStoringParams} from "_/store";
+import {TransactionStoringParams} from '_/store';
 
 
 export function changeInput(element: Parameters<typeof fireEvent.change>['0'], value: string | number): void {

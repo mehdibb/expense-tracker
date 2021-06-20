@@ -49,7 +49,7 @@ interface Props {
   className?: string;
 }
 
-function ApplicationComponent({ className }: Props): React.ReactElement {
+function ApplicationComponent({className}: Props): React.ReactElement {
   const store = useMemo(() => new Store(), []);
   
   const history = useHistory();
@@ -64,38 +64,38 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
 
   // TODO: find a better way to handle the situation where a transaction is not found
   const handleTransactionNotFound = useCallback(() => {
-    history.push("/sorry");
+    history.push('/sorry');
   }, []);
   
   const handleCreateTransaction = useCallback(() => {
     store.createTransaction();
-    history.push("/");
+    history.push('/');
   }, []);
 
   const handleUpdateTransaction = useCallback(() => {
     store.updateTransaction();
-    history.push("/");
+    history.push('/');
   }, []);
 
   const handleDeleteTransaction = useCallback((transaction: Transaction) => {
     store.deleteTransaction(transaction);
-    history.push("/");
+    history.push('/');
   }, []);
 
   const handleDiscardTransactionForm = useCallback(() => {
     if (store.updatingTransaction) {
       store.updatingTransaction.rollback();
-      history.push("/");
+      history.push('/');
     }
     else if (store.creatingTransaction) {
       store.clearCreatingTransaction();
-      history.push("/");
+      history.push('/');
     }
   }, []);
   
   const handleCreateTransactionClick = useCallback(() => {
     store.setCreatingTransaction();
-    history.push("/create-transaction");
+    history.push('/create-transaction');
   }, []);
 
   const handleResetButtonClick = useCallback(() => {
@@ -107,25 +107,25 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
       <StoreContext.Provider value={store}>
         <Header />
         <Switch>
-          <Route path="/" exact>
+          <Route path='/' exact>
             <ActionsWrapper>
               <FiltersWrapper>
                 <SelectBox
                   items={store.yearFilterItems}
                   activeItem={store.activeYearFilterItem}
                   onActiveItemChange={store.setActiveYearFilterItem}
-                  label="Year"
+                  label='Year'
                 />
                 <StoredSelectBox
                   instance={store.monthFilter}
-                  label="Month"
+                  label='Month'
                 />
                 <StoredSelectBox
                   instance={store.typeFilter}
-                  label="Type"
+                  label='Type'
                 />
                 {store.filtersEdited
-                  ? <Button type="button" flat onClick={handleResetButtonClick}>
+                  ? <Button type='button' flat onClick={handleResetButtonClick}>
                     Reset
                   </Button>
                   : null}
@@ -136,10 +136,10 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
             </ActionsWrapper>
             <TransactionsList />
           </Route>
-          <Route path={["/home", "/transactions"]} exact>
-            <Redirect to="/"/>
+          <Route path={['/home', '/transactions']} exact>
+            <Redirect to='/'/>
           </Route>
-          <Route path="/create-transaction">
+          <Route path='/create-transaction'>
             {store.creatingTransaction
               ? <TransactionForm
                 transaction={store.creatingTransaction}
@@ -148,7 +148,7 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
               />
               : null}
           </Route>
-          <Route path="/transactions/:transactionId">
+          <Route path='/transactions/:transactionId'>
             <MemoizedUpdateTransactionComponent
               onTransactionNotFound={handleTransactionNotFound}
               onSubmit={handleUpdateTransaction}
@@ -156,8 +156,8 @@ function ApplicationComponent({ className }: Props): React.ReactElement {
               onDiscard={handleDiscardTransactionForm}
             />
           </Route>
-          <Route path={["*", "/sorry"]}>
-            <Placeholder description="404 Not Found" />
+          <Route path={['*', '/sorry']}>
+            <Placeholder description='404 Not Found' />
           </Route>
         </Switch>
       </StoreContext.Provider>

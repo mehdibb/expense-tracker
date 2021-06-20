@@ -6,7 +6,7 @@ export function dateFormat(
     month?: boolean;
     year?: boolean;
   }): string {
-  const abbreviatedMonth = value.toString().split(" ")[1];
+  const abbreviatedMonth = value.toString().split(' ')[1];
   const day = value.getDate();
   const twoDigitDay = day < 10 ? `0${day}` : day;
   const year = value.getFullYear();
@@ -34,16 +34,16 @@ export function parseDateFromString(value: string): Date {
 }
 
 export const monthMap: Record<string, string> = {
-  "0": "Jan",
-  "1": "Feb",
-  "2": "Mar",
-  "3": "Apr",
-  "4": "May",
-  "5": "Jun",
-  "6": "Jul",
-  "7": "Aug",
-  "8": "Sep",
-  "9": "Oct",
-  "10": "Nov",
-  "11": "Dec",
+  '0': 'Jan',
+  '1': 'Feb',
+  '2': 'Mar',
+  '3': 'Apr',
+  '4': 'May',
+  '5': 'Jun',
+  '6': 'Jul',
+  '7': 'Aug',
+  '8': 'Sep',
+  '9': 'Oct',
+  '10': 'Nov',
+  '11': 'Dec',
 }

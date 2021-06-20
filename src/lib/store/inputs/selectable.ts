@@ -1,6 +1,6 @@
-import {action, computed, makeObservable, observable} from "mobx";
-import {SelectBoxItemType} from "#";
-import InputItem from "./item";
+import {action, computed, makeObservable, observable} from 'mobx';
+import {SelectBoxItemType} from '#';
+import InputItem from './item';
 
 
 export default class SelectableItem extends InputItem {

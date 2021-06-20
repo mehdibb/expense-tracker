@@ -1,10 +1,10 @@
-import {Transaction as TransactionType} from "_/utilities/types";
+import {Transaction as TransactionType} from '_/utilities/types';
 import {v4 as uuid} from 'uuid';
-import {computed, makeAutoObservable, makeObservable} from "mobx";
-import {InputItem, DateItem} from ".";
-import {ChangeEvent} from "react";
-import {SelectableItem} from "./inputs";
-import {currencyFormat, parseFloatWithTwoDecimal} from "_/utilities";
+import {computed, makeAutoObservable, makeObservable} from 'mobx';
+import {InputItem, DateItem} from '.';
+import {ChangeEvent} from 'react';
+import {SelectableItem} from './inputs';
+import {currencyFormat, parseFloatWithTwoDecimal} from '_/utilities';
 
 
 class Amount extends InputItem {

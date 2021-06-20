@@ -19,7 +19,7 @@ interface Props {
 
 function TransactionsListItemComponent({className, item, onActivate}: Props): React.ReactElement {
   const handleKeyPress= useCallback((event: React.KeyboardEvent<HTMLLIElement>) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (event.key === 'Enter' || event.key === ' ') {
       onActivate(item);
     }
   }, [onActivate, item]);
@@ -29,11 +29,13 @@ function TransactionsListItemComponent({className, item, onActivate}: Props): Re
   }, [onActivate, item]);
   
   return (
+    // TODO: using button here is more accessible but html semantics will be ruined
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex
     <li className={className} onClick={handleClick} tabIndex={0} onKeyPress={handleKeyPress}>
       <Day>{dateFormat(item.date.dateValue, {day: true, twoDigitDay: true})}</Day>
       <Type>{item.transactionDirection.selectedItem?.text}</Type>
       <Description>{item.description.value}</Description>
-      <Amount direction={item.transactionDirection.storingParam} data-testid="transaction-amount">
+      <Amount direction={item.transactionDirection.storingParam} data-testid='transaction-amount'>
         {item.displayAmount}
       </Amount>
     </li>

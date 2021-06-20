@@ -1,5 +1,5 @@
-import {action, makeObservable, observable} from "mobx";
-import {ChangeEvent} from "react";
+import {action, makeObservable, observable} from 'mobx';
+import {ChangeEvent} from 'react';
 
 
 export default class InputItem {

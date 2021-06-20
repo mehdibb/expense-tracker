@@ -7,11 +7,13 @@
   "plugins": [
     "@typescript-eslint",
     "react-hooks",
-    "react"
+    "react",
+    "jsx-a11y"
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/strict"
   ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
@@ -26,7 +28,21 @@
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "no-undef": "off",
     "no-redeclare": "off",
-    "no-inner-declarations": "off"
+    "no-inner-declarations": "off",
+    "object-curly-spacing": "error",
+    "quotes": ["error", "single"],
+    "jsx-quotes": ["error", "prefer-single"],
+    "react/jsx-closing-bracket-location": [
+      "error",
+      {
+        "nonEmpty": "after-props",
+        "selfClosing": "line-aligned"
+      }
+    ],
+    "eol-last": "error",
+    "no-warning-comments": "warn",
+    "no-console": "warn",
+    "max-len": ["error", 120]
   },
   "settings": {
     "react": {

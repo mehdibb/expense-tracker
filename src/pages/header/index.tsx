@@ -30,7 +30,7 @@ function HeaderComponent({className}: Props): React.ReactElement {
   const history = useHistory();
 
   const handleBackButtonClick = useCallback(() => {
-    history.push("/");
+    history.push('/');
   }, []);
 
   const location = useLocation();
@@ -62,8 +62,8 @@ function HeaderComponent({className}: Props): React.ReactElement {
   }, []);
   
   return (
-    <header className={className} data-testid="application-header">
-      {location.pathname === "/"
+    <header className={className} data-testid='application-header'>
+      {location.pathname === '/'
         ? null
         : <BackButton Icon={ArrowLeft} flat purple onClick={handleBackButtonClick}>
           Back
@@ -79,16 +79,16 @@ function HeaderComponent({className}: Props): React.ReactElement {
         ? <Form onSubmit={handleSubmitBalance}>
           <StoredTextInput
             instance={store.initialBalance}
-            label="Initial balance:"
+            label='Initial balance:'
           />
-          <Button Icon={Close} title="Discard" onClick={handleDiscardBalance} type="button" />
-          <Button Icon={Done} title="Save" type="submit" disabled={!store.initialBalance.isValid}/>
+          <Button Icon={Close} title='Discard' onClick={handleDiscardBalance} type='button' />
+          <Button Icon={Done} title='Save' type='submit' disabled={!store.initialBalance.isValid}/>
         </Form>
         : <BalanceWrapper>
-          <Balance title="total balance">
+          <Balance title='total balance'>
             {currencyFormat(store.totalBalance)}
           </Balance>
-          <Button Icon={Edit} title="Edit" onClick={handleEditBalance}/>
+          <Button Icon={Edit} title='Edit' onClick={handleEditBalance}/>
         </BalanceWrapper>}
         <Currency>USD</Currency>
       </BottomSection>

@@ -48,9 +48,9 @@ function TransactionsListComponent({className}: Props): React.ReactElement {
   }, [store.transactions, store.transactionsDateMap]);
   
   return (
-    <div className={className} data-testid="transactions-list">
+    <div className={className} data-testid='transactions-list'>
       {Object.entries(store.transactionsDateMap).length === 0
-        ? <Placeholder description="No transactions."/>
+        ? <Placeholder description='No transactions.'/>
         : <TransactionsWrapper>
           {transactionItems}
         </TransactionsWrapper>}

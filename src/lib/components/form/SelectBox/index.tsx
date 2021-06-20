@@ -43,15 +43,14 @@ function SelectBoxComponent({
           <Select
             onChange={handleChange}
             value={activeItem?.id}
-            defaultValue={activeItem ? undefined : "default"}
-            id={inputId}
-          >
+            defaultValue={activeItem ? undefined : 'default'}
+            id={inputId}>
             {items.map(({id, text}) => (
               <option key={id} value={id}>{text}</option>
             ))}
             {activeItem
               ? null
-              : <option disabled hidden value="default"/>}
+              : <option disabled hidden value='default'/>}
           </Select>
           <IconWrapper><ArrowDropDown /></IconWrapper>
         </SelectWrapper>

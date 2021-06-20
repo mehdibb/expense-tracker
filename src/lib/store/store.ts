@@ -1,9 +1,9 @@
-import {makeAutoObservable} from "mobx";
-import {ChangeEvent} from "react";
-import {SelectBoxItemType} from "#";
-import {monthMap, parseFloatWithTwoDecimal} from "_/utilities";
-import {Transaction, TransactionStoringParams} from ".";
-import {InputItem, SelectableItem} from "./inputs";
+import {makeAutoObservable} from 'mobx';
+import {ChangeEvent} from 'react';
+import {SelectBoxItemType} from '#';
+import {monthMap, parseFloatWithTwoDecimal} from '_/utilities';
+import {Transaction, TransactionStoringParams} from '.';
+import {InputItem, SelectableItem} from './inputs';
 
 
 export const LOCAL_STORAGE_TRANSACTIONS_KEY = 'transactions';
@@ -14,14 +14,14 @@ class InitialBalance extends InputItem {
     const parsedValue = parseFloatWithTwoDecimal(event.target.value);
     
     if (parsedValue < 0) {
-      this.setCustomError("Initial balance cannot be less than zero.");
+      this.setCustomError('Initial balance cannot be less than zero.');
     }
     else if (event.target.value.length >= Number.MAX_SAFE_INTEGER.toString().length - 1) {
       this.setCustomError(`Entered value should be less than ${Number.MAX_SAFE_INTEGER.toString().length} digits.`);
     }
     // eslint-disable-next-line no-useless-escape
     else if (!/^\-?[0-9]+(e[0-9]+)?(\.[0-9]+)?$/.test(event.target.value)) {
-      this.setCustomError("Enter a valid number.");
+      this.setCustomError('Enter a valid number.');
     }
     else {
       this.clearCustomError();
@@ -74,7 +74,7 @@ export default class Store {
     makeAutoObservable(this, {}, {autoBind: true});
     const transactions = localStorage.getItem(LOCAL_STORAGE_TRANSACTIONS_KEY);
     const initialBalance = localStorage.getItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY);
-
+    
     if (transactions != null) {
       this.transactions = (JSON.parse(transactions) as TransactionStoringParams[])
         .map((transaction) => new Transaction(transaction));
@@ -84,7 +84,7 @@ export default class Store {
       this.setLocalStorageTransactions();
     }
 
-    if (initialBalance != null && initialBalance !== "") {
+    if (initialBalance != null && initialBalance !== '') {
       this.initialBalance.setValue(parseFloatWithTwoDecimal(JSON.parse(initialBalance)).toString());
     }
     else {
@@ -93,7 +93,8 @@ export default class Store {
 
     this.activeYearFilterItem = this.yearFilterItems.find(({id}) => id === 'all') as SelectBoxItemType;
     
-    // TODO: write a reaction to update the localStorage transactions when this.transactions are updated
+    // TODO: Currently setLocalStorage methods are called imperatively when "initial balance" and "transactions" are
+    // changed. This can be solved using a mobx reaction but unfortunately it didn't work.
   }
 
   public updateInitialBalance(): void {
@@ -163,7 +164,7 @@ export default class Store {
   }
 
   public get totalBalance(): number {
-    return parseFloatWithTwoDecimal(this.initialBalance.value || "0") + 
+    return parseFloatWithTwoDecimal(this.initialBalance.value || '0') + 
       this.transactions.reduce((total, {signedAmount}) => total + signedAmount, 0);
   }
 
@@ -215,6 +216,6 @@ export default class Store {
   }
 
   private setLocalStorageInitialBalance(): void {
-    localStorage.setItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY, JSON.stringify(this.initialBalance.value || "0.00"));
+    localStorage.setItem(LOCAL_STORAGE_INITIAL_BALANCE_KEY, JSON.stringify(this.initialBalance.value || '0.00'));
   }
 }
