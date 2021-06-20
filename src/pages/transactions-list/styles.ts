@@ -2,7 +2,7 @@ import {Placeholder} from '#';
 import styled from '@emotion/styled';
 
 
-const Section = styled.span`
+const Section = styled.li`
   margin-right: auto;
   color: var(--dark-grey);
   font-weight: 700;
