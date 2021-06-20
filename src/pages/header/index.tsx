@@ -30,7 +30,7 @@ function HeaderComponent({className}: Props): React.ReactElement {
   const history = useHistory();
 
   const handleBackButtonClick = useCallback(() => {
-    history.goBack();
+    history.push("/");
   }, []);
 
   const location = useLocation();

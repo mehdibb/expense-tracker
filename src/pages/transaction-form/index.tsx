@@ -28,7 +28,7 @@ function TransactionFormComponent({className, transaction, onSubmit, onDelete, o
   }, [onSubmit]);
 
   return (
-    <form className={className} onSubmit={handleSubmit}>
+    <form className={className} onSubmit={handleSubmit} data-testid="transaction-form">
       <StoredTextInput
         type="number"
         label="Enter amount"
