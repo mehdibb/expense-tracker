@@ -62,6 +62,7 @@ export default class InputItem {
 
   public rollback(): void {
     this.editingValue = this.value;
+    this.clearCustomError();
   }
 
   public get isValid(): boolean {

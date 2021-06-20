@@ -33,6 +33,7 @@ function TransactionFormComponent({className, transaction, onSubmit, onDelete, o
         type='number'
         label='Enter amount'
         instance={transaction.amount}
+        max={Number.MAX_SAFE_INTEGER - 1}
         step='0.01'
       />
       <StoredTextArea label='Note' instance={transaction.description}/>

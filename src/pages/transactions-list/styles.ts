@@ -17,7 +17,7 @@ export const YearSection = styled(Section)`
   font-size: 24px;
 
   :not(:first-of-type) {
-    padding-top: 8px;
+    padding-top: 16px;
   }
 `;
 

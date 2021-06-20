@@ -17,7 +17,7 @@ class InitialBalance extends InputItem {
       this.setCustomError('Initial balance cannot be less than zero.');
     }
     else if (event.target.value.length >= Number.MAX_SAFE_INTEGER.toString().length - 1) {
-      this.setCustomError(`Entered value should be less than ${Number.MAX_SAFE_INTEGER.toString().length} digits.`);
+      this.setCustomError(`Entered value should be less than ${Number.MAX_SAFE_INTEGER.toString().length - 1} digits.`);
     }
     // eslint-disable-next-line no-useless-escape
     else if (!/^\-?[0-9]+(e[0-9]+)?(\.[0-9]+)?$/.test(event.target.value)) {
