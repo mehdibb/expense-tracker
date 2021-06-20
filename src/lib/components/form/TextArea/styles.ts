@@ -6,6 +6,7 @@ export const TextArea = styled.textarea`
   ${baseInputStyles};
 
   resize: vertical;
+  min-height: 52px;
 `;
 
 export const StyledTextArea = styled.div`

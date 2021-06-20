@@ -20,6 +20,9 @@ export const Description = styled.span`
   align-self: end;
   color: var(--grey);
   grid-area: description;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Amount = styled.span<{direction: Transaction['transactionDirection']['storingParam']}>`
@@ -43,7 +46,7 @@ export const StyledTransactionsListItem = styled.li`
   box-shadow: 0 4px 4px -3px var(--grey);
   grid-template-areas: 'day type amount'
     'day description amount';
-  grid-template-columns: 72px auto 192px;
+  grid-template-columns: 72px auto 240px;
 
   :hover {
     background-color: var(--light-grey);
