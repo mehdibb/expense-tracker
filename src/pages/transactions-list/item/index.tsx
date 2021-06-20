@@ -18,12 +18,18 @@ interface Props {
 }
 
 function TransactionsListItemComponent({className, item, onActivate}: Props): React.ReactElement {
+  const handleKeyPress= useCallback((event: React.KeyboardEvent<HTMLLIElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      onActivate(item);
+    }
+  }, [onActivate, item]);
+  
   const handleClick = useCallback(() => {
     onActivate(item);
   }, [onActivate, item]);
   
   return (
-    <li className={className} onClick={handleClick}>
+    <li className={className} onClick={handleClick} tabIndex={0} onKeyPress={handleKeyPress}>
       <Day>{dateFormat(item.date.dateValue, {day: true, twoDigitDay: true})}</Day>
       <Type>{item.transactionDirection.selectedItem?.text}</Type>
       <Description>{item.description.value}</Description>
